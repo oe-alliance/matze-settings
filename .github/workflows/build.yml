@@ -1,0 +1,29 @@
+name: build
+
+on:
+  push:
+    branches: [ master ]
+  schedule:
+    - cron:  '1 1 * * 0'
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+
+      - uses: actions/checkout@v3
+        with:
+          ref: 'master'
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.11'
+
+      - name: Fetch files
+        run: |
+          sudo apt-get -q update
+          sudo apt-get install dos2unix rename lynx
+          ./CI/build.sh
